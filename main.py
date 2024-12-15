@@ -1,7 +1,5 @@
 import tkinter as tk
-import tkinter.ttk as ttk
-
-import customtkinter
+from tkinter import ttk
 import customtkinter as ctk
 
 
@@ -12,21 +10,30 @@ class App(ctk.CTk):
         self.title("Gestionnaire de paquets par matières")
         self.resizable(False, False)
 
-        for i in range(3):
-            self.columnconfigure(i, weight=1)
-        for i in range(15):
-            self.rowconfigure(i, weight=1)
-
-        ctk.CTkLabel(self, text="Gestion des paquets par matière").grid(row=0, column=1)
-
         self.subject_list: list[str] = ["NSI", "SI", "Maths", ]
         self.subject_spinner = ctk.CTkComboBox(self, values=self.subject_list)
-        self.subject_spinner.grid(row=1, column=0)
+
+        self.layout = ctk.CTkFrame(self)
+        self.packet_state = ctk.CTkLabel(self.layout, text="Non-installé")
+
+        self.install_button = ctk.CTkButton(self, text="Installer")
+
+        self.build()
+
+    def build(self) -> None:
+        ctk.CTkLabel(self, text="Gestion des paquets par matière", font=ctk.CTkFont("Calibri", 24)).pack(pady=25)
+        self.subject_spinner.pack(pady=15)
+
+        ctk.CTkLabel(self.layout, text="Etat du paquet:").pack(side=tk.LEFT, padx=20)
+        self.packet_state.pack(side=tk.RIGHT, padx=20)
+        self.layout.pack(ipady=15, pady=15)
+
+        self.install_button.pack(ipadx=10, ipady=10, pady=15)
 
 
 if __name__ == "__main__":
-    customtkinter.set_default_color_theme("blue")
-    customtkinter.set_appearance_mode("System")
+    ctk.set_default_color_theme("blue")
+    ctk.set_appearance_mode("System")
 
     app: App = App()
     app.mainloop()
